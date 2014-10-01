@@ -1,0 +1,496 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"pr",
+				"println"
+			],
+			[
+				"HAS",
+				"hasUniqueChars"
+			],
+			[
+				"char",
+				"char_set"
+			],
+			[
+				"frie",
+				"friend_ids"
+			],
+			[
+				"get",
+				"getRound"
+			],
+			[
+				"async",
+				"asyncResults"
+			],
+			[
+				"found",
+				"foundPrev"
+			],
+			[
+				"foundRe",
+				"foundRels"
+			],
+			[
+				"over",
+				"overallFoundRels"
+			],
+			[
+				"is",
+				"isRange"
+			],
+			[
+				"maj",
+				"majorRels"
+			],
+			[
+				"match",
+				"matchedRels"
+			],
+			[
+				"major",
+				"majorRels"
+			],
+			[
+				"cmd",
+				"cmd1"
+			],
+			[
+				"to",
+				"toString"
+			],
+			[
+				"re",
+				"req"
+			],
+			[
+				"fo",
+				"for	for (…) {…} (Improved Native For-Loop)"
+			],
+			[
+				"sig",
+				"sigVal"
+			],
+			[
+				"file",
+				"fileVal"
+			],
+			[
+				"for",
+				"for	for (…) {…}"
+			],
+			[
+				"req",
+				"require"
+			],
+			[
+				"trav",
+				"trav_prev"
+			],
+			[
+				"play",
+				"playGame"
+			],
+			[
+				"nex",
+				"next_port"
+			],
+			[
+				"port",
+				"port_hash"
+			],
+			[
+				"find",
+				"find_name"
+			],
+			[
+				"ship",
+				"ship_hash"
+			],
+			[
+				"vac",
+				"vacant_ships"
+			],
+			[
+				"vacn",
+				"vacant_ships"
+			],
+			[
+				"vacan",
+				"vacant_ships"
+			],
+			[
+				"attr",
+				"attr_accessor"
+			],
+			[
+				"arriv",
+				"arrived"
+			],
+			[
+				"tra",
+				"traveler"
+			],
+			[
+				"print",
+				"printMonitor"
+			],
+			[
+				"snc",
+				"synchronize"
+			],
+			[
+				"doc",
+				"dock"
+			],
+			[
+				"curr",
+				"curr_port"
+			],
+			[
+				"iin",
+				"itinerary"
+			],
+			[
+				"new",
+				"new_cond"
+			],
+			[
+				"travel",
+				"traveler"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 47.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 167.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC420/Quadtree"
+	],
+	"file_history":
+	[
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC420/Quadtree/main.cpp",
+		"/Users/Ali/Documents/Programs/CLion/Quadtree/main.cpp",
+		"/Users/Ali/Documents/Programs/CLion/Quadtree/part2",
+		"/Users/Ali/Desktop/Java Practice/practice.java",
+		"/Users/Ali/Library/Application Support/Sublime Text 3/Packages/User/Java.sublime-build",
+		"/Users/Ali/Library/Application Support/Sublime Text 3/Packages/User/python3.sublime-build",
+		"/Users/Ali/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/Default (OSX).sublime-keymap",
+		"/Users/Ali/Desktop/practice.java",
+		"/Users/Ali/Desktop/practice.rb",
+		"/Users/Ali/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/SublimeCodeIntel.sublime-settings",
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC330/Ali/p5/space.rb",
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC330/Ali/p2/fa.rb",
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC330/Ali/p1/maze.rb",
+		"/Users/Ali/Documents/Programs/Workspace/Code Styles/GoogleCppEclipseStyle.xml",
+		"/private/var/folders/jy/3rd048z12fbg06fksn_rhk4m0000gn/T/8438B983-B7B8-4B48-868D-617610587129/server.js",
+		"/private/var/folders/jy/3rd048z12fbg06fksn_rhk4m0000gn/T/110C9E7E-6D48-46B2-A470-572FE8FDDE3C/views/index.ejs",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/server.js",
+		"/Users/Ali/Library/Application Support/Sublime Text 3/Packages/JSLint/JSLint.sublime-settings",
+		"/Users/Ali/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/Ali/Documents/Programs/Repos/hoozat/server.js",
+		"/Users/Ali/Documents/Programs/Repos/hoozat/node_modules/socket.io/node_modules/socket.io-client/node_modules/uglify-js/tmp/instrument.js",
+		"/Users/Ali/Documents/Programs/Repos/hoozat/node_modules/socket.io/node_modules/socket.io-client/node_modules/ws/lib/Validation.fallback.js",
+		"/Users/Ali/Documents/Programs/Repos/hoozat/node_modules/socket.io/node_modules/socket.io-client/lib/vendor/web-socket-js/flash-src/IWebSocketLogger.as",
+		"/Users/Ali/Documents/Programs/Repos/hoozat/node_modules/socket.io/node_modules/socket.io-client/lib/vendor/web-socket-js/flash-src/com/hurlant/crypto/tls/IConnectionState.as",
+		"/Users/Ali/Documents/Programs/Repos/hoozat/resources/Procfile",
+		"/Users/Ali/Documents/Programs/Repos/hoozat/resources/package.json",
+		"/Users/Ali/Documents/Programs/Repos/hoozat/views/index.ejs",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/views/index.html",
+		"/Users/Ali/Documents/Programs/Repos/hoozat/views/login.ejs",
+		"/Users/Ali/Documents/Programs/Repos/hoozat/views/account.ejs",
+		"/Users/Ali/Documents/Programs/Repos/hoozat/views/friends.ejs",
+		"/Users/Ali/Documents/Programs/Websites/hoozat/views/signin.ejs",
+		"/Users/Ali/Documents/Programs/Websites/hoozat/views/index.ejs",
+		"/Users/Ali/Documents/Programs/Websites/hoozat/server.js",
+		"/Users/Ali/Documents/Programs/Websites/hoozat/sublime/hoozat.sublime-project",
+		"/Users/Ali/Documents/Programs/Websites/hoozat/index.html",
+		"/Users/Ali/Documents/Programs/Websites/hoozat/views/account.ejs",
+		"/Users/Ali/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/Ali/Documents/Programs/Websites/hoozat/README.md",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/data/temp.rb",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/found.txt",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/moodleRels.txt",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/pmaRels.txt",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/data/phprels.txt",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/data/moodlerels.txt",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/data/libs/phpmyadmin/url.php",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/data/libs/phpmyadmin/libraries/plugins/import/upload/UploadNoplugin.class.php",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/data/libs/phpmyadmin/libraries/plugins/UploadInterface.int.php",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/package.json",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/data/libs/phpmyadmin/libraries/parse_analyze.inc.php",
+		"/Users/Ali/Documents/Programs/Websites/temp.rb",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/tmp.30E",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/data/libs/moodle/getReleases.py",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/data/libs/moodle/tags.txt",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/getReleases.py",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/node_modules/babyparse/babyparse.js",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/support/jquery.parse.min.js",
+		"/Users/Ali/Documents/Programs/Websites/SignatureTool/sublime/SignatureTool.sublime-project",
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC330/Ali/p5/public2.in",
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC330/Ali/p5/public3.in",
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC330/Ali/p5/public7.in",
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC451/HW3P_AliEskandari.java",
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC451/HW3P_JamesWills.java",
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC330/Ali/p5/public7_verify.out",
+		"/Users/Ali/Dropbox/SCHOOL/ECE/CMSC330/Ali/p5/public1.in"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"atoi",
+			"cmd[",
+			"cmd",
+			"stoi",
+			"print_op",
+			"results",
+			"%",
+			"2_1_10",
+			"overallFoundRels",
+			"escRegex",
+			"founddRels",
+			"matchedRels",
+			"i",
+			"mrelsArr",
+			"?_?_",
+			"moodle/",
+			"path",
+			"\"/>\n",
+			"sig",
+			"file",
+			"File",
+			"file",
+			"File",
+			"file",
+			"File",
+			"file",
+			"File",
+			"file",
+			"File",
+			"file",
+			"File",
+			"class",
+			"span id",
+			"span",
+			"file",
+			"File",
+			"file",
+			"File",
+			"file",
+			"File",
+			"searching",
+			"i",
+			"parameters",
+			"res",
+			"jQu",
+			"trav_prev",
+			"index",
+			"Enterprise",
+			"Vulcan",
+			"Earth",
+			"ali",
+			"u",
+			"b",
+			"a",
+			"Vulcan",
+			"b",
+			"Vulcan",
+			"a",
+			"Vulcan",
+			"Kirk",
+			"memo",
+			"curr",
+			"last",
+			"currWinner",
+			"multGameHelper",
+			"multGame",
+			"in",
+			"validSim",
+			"port",
+			"trav_hash",
+			"port_hash",
+			"ship_hash",
+			"ship",
+			"trav",
+			"ship",
+			"trav",
+			"dest_port",
+			"m",
+			"trav_port",
+			"c_port",
+			"ship",
+			"@m",
+			"arrived",
+			"curr_port",
+			"port",
+			"name",
+			"traveler",
+			"curr_port",
+			"threads",
+			"ship_threads",
+			"trav_threads"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 37.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 195.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "cmsc420_quadtree.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 202.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
