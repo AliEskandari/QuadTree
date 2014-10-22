@@ -4,12 +4,15 @@
 #include <sstream>
 #include <iostream>
 #include <set>
+#include <queue>
 
 #include "Point.hpp"
 #include "Rect.hpp"
 #include "QuadNode.hpp"
 
 #define MAX_NAME_LEN 6
+
+typedef priority_queue<QuadNode*, vector<QuadNode*>, CompareDistanceToRect> QuadNodePQ;
 
 const int WorldX = 0, WorldY = 0; /* coordinates of the lower left corner */
 const int WorldLX = 128, WorldLY = 128;
@@ -42,6 +45,9 @@ private:
     bool                   collapse(QuadNode* n);
     void                   touch_helper(QuadNode* n, Rect& target, set<Rect> *results);
     void                   within_helper(QuadNode* n, Rect& r1, Rect& r2, set<Rect> *results);
+    void                   horiz_neighbor_helper(QuadNodePQ* pq, Rect& target, Rect** result);
+    void                   vert_neighbor_helper(QuadNodePQ* pq, Rect& target, Rect** result);
+
 public:
     QuadTree(int width);
     QuadTree();
@@ -65,8 +71,8 @@ public:
     /* Part 4 */
     set<Rect>* 	           touch(Rect& target);						    // op 9
     set<Rect>* 	           within(Rect& r1, Rect& r2);					// op 10
-    void 	               horiz_neighbor();						    // op 11
-    void 	               vert_neighbor();						        // op 11
+    Rect* 	               horiz_neighbor(Rect& target);			    // op 11
+    Rect* 	               vert_neighbor(Rect& target);				    // op 11
     void 	               nearest_rectangle();					        // op 12
     void 	               window();						            // op 13
     void 	               nearest_neighbor();						    // op 14

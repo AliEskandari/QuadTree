@@ -30,28 +30,44 @@ int main()
 
 
     if (debug) {
-        q.set_trace(ON);
+//        q.set_trace(ON);
+//        produce_output(q.init_quadtree(8), cmd);
+//        produce_output(q.list_rectangles(), cmd);
+//        produce_output(q.create_rectangle("R1", 5, 5, 25, 25), cmd);
+//        produce_output(q.create_rectangle("R4", 200, 200, 210, 210), cmd);
+//        produce_output(q.create_rectangle("R2", 20, 20, 31, 31), cmd);
+//        produce_output(q.create_rectangle("R3", 30, 30, 40, 40), cmd);
+//        produce_output(q.insert("R4"), cmd);
+//        produce_output(q.search_point(1, 1), cmd);
+//        produce_output(q.insert("R1"), cmd);
+//        produce_output(q.insert("R4"), cmd);
+//        produce_output(q.insert("R2"), cmd);
+//        produce_output(q.search_point(1, 1), cmd);
+//        produce_output(q.insert("R3"), cmd);
+//        produce_output(q.search_point(5, 5), cmd);
+//        produce_output(q.list_rectangles(), cmd);
+//        produce_output(q.search_rectangle("R2"), cmd);
+//        produce_output(q.search_point(1, 1), cmd);
+//        produce_output(q.insert("R2"), cmd);
+//        produce_output(q.search_point(7, 7), cmd);
+//        produce_output(q.insert("R2"), cmd);
+//        produce_output(q.delete_point(10, 10), cmd);
+
         produce_output(q.init_quadtree(8), cmd);
-        produce_output(q.list_rectangles(), cmd);
-        produce_output(q.create_rectangle("R1", 5, 5, 25, 25), cmd);
-        produce_output(q.create_rectangle("R4", 200, 200, 210, 210), cmd);
-        produce_output(q.create_rectangle("R2", 20, 20, 31, 31), cmd);
-        produce_output(q.create_rectangle("R3", 30, 30, 40, 40), cmd);
-        produce_output(q.insert("R4"), cmd);
-        produce_output(q.search_point(1, 1), cmd);
-        produce_output(q.insert("R1"), cmd);
-        produce_output(q.insert("R4"), cmd);
-        produce_output(q.insert("R2"), cmd);
-        produce_output(q.search_point(1, 1), cmd);
+        produce_output(q.create_rectangle("R1",5,5,25,25), cmd);
+        produce_output(q.create_rectangle("R2",20,20,31,31), cmd);
+        produce_output(q.create_rectangle("R3",30,30,40,40), cmd);
+        produce_output(q.create_rectangle("R4",200,200,210,210), cmd);
+        produce_output(q.create_rectangle("S1",5,5,10,10), cmd);
+        produce_output(q.create_rectangle("S2",10,10,13,13), cmd);
+        produce_output(q.create_rectangle("S3",14,14,20,20), cmd);
+        produce_output(q.create_rectangle("S4",13,2,14,24), cmd);
         produce_output(q.insert("R3"), cmd);
-        produce_output(q.search_point(5, 5), cmd);
-        produce_output(q.list_rectangles(), cmd);
-        produce_output(q.search_rectangle("R2"), cmd);
-        produce_output(q.search_point(1, 1), cmd);
-        produce_output(q.insert("R2"), cmd);
-        produce_output(q.search_point(7, 7), cmd);
-        produce_output(q.insert("R2"), cmd);
-        produce_output(q.delete_point(10, 10), cmd);
+        produce_output(q.insert("R4"), cmd);
+        produce_output(q.insert("S1"), cmd);
+        produce_output(q.insert("S3"), cmd);
+        produce_output(q.horiz_neighbor("R2"), cmd);
+
         return 0;
     }
 
@@ -115,16 +131,16 @@ int main()
                 message = q.within(cmd[1], stoi(cmd[2]));
         } else if (op == "HORIZ_NEIGHBOR") {
             if (is_valid_op(12, cmd, 1))
-                q.horiz_neighbor(cmd[1]);
+                message = q.horiz_neighbor(cmd[1]);
         } else if (op == "VERT_NEIGHBOR") {
             if (is_valid_op(12, cmd, 1))
-                q.vert_neighbor(cmd[1]);
+                message = q.vert_neighbor(cmd[1]);
         } else if (op == "NEAREST_RECTANGLE") {
             if (is_valid_op(13, cmd, 2))
                 q.nearest_rectangle(stoi(cmd[1]), stoi(cmd[2]));
         } else if (op == "WINDOW") {
             if (is_valid_op(14, cmd, 4))
-               q.window(stoi(cmd[1]), stoi(cmd[2]), stoi(cmd[3]), stoi(cmd[4]));
+                q.window(stoi(cmd[1]), stoi(cmd[2]), stoi(cmd[3]), stoi(cmd[4]));
         } else if (op == "NEAREST_NEIGHBOR") {
             if (is_valid_op(15, cmd, 1))
                 q.nearest_neighbor(cmd[1]);
@@ -138,6 +154,8 @@ int main()
             transform(cmd[1].begin(), cmd[1].end(), cmd[1].begin(), ::toupper);
             if (cmd[1] == "ON" || cmd[1] == "OFF") message = q.set_trace(cmd[1] == "ON" ? ON : OFF);
             else cout << "INVALID TRACE COMMAND" << endl;
+        } else if (op == "GET_STATE") {
+            message = q.get_state();
         } else if (op == "QUIT") {
             cout << "SESSION ENDED" << endl;
         } else {

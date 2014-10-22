@@ -33,11 +33,14 @@ class QuadTreeApp
 private:
     QuadTree                        m_quadtree;
     map<string, Rect>               m_rect_list;
+    set<string>                     m_active_rects;
     bool                            m_should_trace;
 
 public:
     QuadTreeApp();
     ~QuadTreeApp();
+
+    Message* get_state();
 
     /* Display Helpers */
     static void display_quadrants(QuadNode* n);
@@ -64,8 +67,8 @@ public:
     /* Part 4 */
     Message* touch(string name);					    						// op 9
     Message* within(string name, int dist);							    		// op 10
-    void horiz_neighbor(string name);						    				// op 11
-    void vert_neighbor(string name);						    				// op 11
+    Message* horiz_neighbor(string r);						    				// op 11
+    Message* vert_neighbor(string r);						    				// op 11
     void nearest_rectangle(int x, int y);					    				// op 12
     void window(int x1, int x2, int y1, int y2);			    				// op 13
     void nearest_neighbor(string name);						    				// op 14

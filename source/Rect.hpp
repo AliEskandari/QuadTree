@@ -36,6 +36,10 @@ public:
     inline bool touches(Rect& r) { return ((!(r.m_x1 > m_x2 || r.m_x2 < m_x1) && (r.m_y1 == m_y2 || r.m_y2 == m_y1)) /* touches top or bottom */
                 || (!(r.m_y1 > m_y2 || r.m_y2 < m_y1) && (r.m_x1 == m_x2 || r.m_x2 == m_x1)));} /* touches left or right */
 
+    /* will return 0 if rectangles intersect or touch horizontally/vertically, positive otherwise */
+    inline int horiz_distance(Rect& r) { return max(0, max(r.m_x1 - m_x2, m_x1 - r.m_x2)); }
+    inline int vert_distance(Rect& r) { return max(0, max(r.m_y1 - m_y2, m_y1 - r.m_y2)); }
+
     inline bool operator ==(const Rect& r) { return m_x1 == r.m_x1 && m_y1 == r.m_y1 && m_x2 == r.m_x2 && m_y2 == r.m_y2; }
     inline bool operator !=(const Rect& r) { return !(*this == r); }
 };

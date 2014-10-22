@@ -312,6 +312,144 @@ void QuadTree::within_helper(QuadNode* n, Rect& r1, Rect& r2, set<Rect>* results
     }
 }
 
+/**/
+Rect* QuadTree::horiz_neighbor(Rect &target) {
+
+    start_trace();
+
+    /* create priority queue keyed on min horizontal distance to target */
+    QuadNodePQ* pq = new QuadNodePQ(CompareDistanceToRect(target, HORIZONTAL));
+    pq->push(m_root);
+
+    /* find min horizontal neighbor */
+    Rect* result    = nullptr;
+    horiz_neighbor_helper(pq, target, &result);
+
+    /* cleanup */
+    delete pq;
+
+    return result;
+}
+
+void QuadTree::horiz_neighbor_helper(QuadNodePQ *pq, Rect &target, Rect **result) {
+
+    /* stop when queue is empty */
+    if(pq->empty()) return;
+
+    /* grab next node with smallest horizontal distance to target rect */
+    QuadNode* n = pq->top();
+    pq->pop();
+
+    /* don't visit node if it is farther from target rect than nearest rect found so far */
+    int node_to_target = n->m_bounds.horiz_distance(target);
+    int result_to_target = (*result == nullptr) ? m_width : target.horiz_distance(**result);
+
+    if (node_to_target >= result_to_target) return;
+
+    visit(n);
+
+    if (n->m_type == WHITE) /* if node is empty */
+        /* → return */
+    {
+        return;
+    }
+    else if (n->m_type == BLACK) /* else if node has rect data */
+        /* → check if data is has smaller horizontal distance, return */
+    {
+        int rect_to_target  = n->m_rect.horiz_distance(target);
+        int min_dist        = (*result == nullptr) ? m_width : n->m_rect.horiz_distance(**result);
+
+        /* if horizontal distance is valid (rects do not intersect) and less than previous min → set as result */
+        if (!n->m_rect.intersects(target) && rect_to_target < min_dist) *result = &(n->m_rect);
+
+        return;
+    }
+    else /* (m_type == GRAY) */ /* else node is parent */
+        /* → search rect in 4 quadrants */
+    {
+        pq->push(n->m_nw);
+        pq->push(n->m_ne);
+        pq->push(n->m_sw);
+        pq->push(n->m_se);
+
+        horiz_neighbor_helper(pq, target, result);
+        horiz_neighbor_helper(pq, target, result);
+        horiz_neighbor_helper(pq, target, result);
+        horiz_neighbor_helper(pq, target, result);
+
+        return;
+    }
+}
+
+/**/
+Rect* QuadTree::vert_neighbor(Rect &target) {
+
+    start_trace();
+
+    /* create priority queue keyed on min horizontal distance to target */
+    QuadNodePQ* pq = new QuadNodePQ(CompareDistanceToRect(target, VERTICAL));
+    pq->push(m_root);
+
+    /* find min vertical neighbor */
+    Rect* result    = nullptr;
+    vert_neighbor_helper(pq, target, &result);
+
+    /* cleanup */
+    delete pq;
+
+    return result;
+}
+
+void QuadTree::vert_neighbor_helper(QuadNodePQ* pq, Rect& target, Rect **result) {
+
+    /* stop when queue is empty */
+    if(pq->empty()) return;
+
+    /* grab next node with smallest vertical distance to target rect */
+    QuadNode* n = pq->top();
+    pq->pop();
+
+    /* don't consider node if it is farther from target rect than nearest rect found so far */
+    int node_to_target = n->m_bounds.vert_distance(target);
+    int result_to_target = (*result == nullptr) ? m_width : target.vert_distance(**result);
+
+    if (node_to_target >= result_to_target) return;
+
+    visit(n);
+
+    if (n->m_type == WHITE) /* if node is empty */
+        /* → return */
+    {
+        return;
+    }
+    else if (n->m_type == BLACK) /* else if node has rect data */
+        /* → check if data is has smaller vertical distance, return */
+    {
+        int rect_to_target  = n->m_rect.vert_distance(target);
+        int min_dist        = (*result == nullptr) ? m_width : n->m_rect.vert_distance(**result);
+
+        /* if vertical distance is valid and less than previous min set as result */
+        if (rect_to_target > 0 && rect_to_target < min_dist) *result = &(n->m_rect);
+
+        return;
+    }
+    else /* (m_type == GRAY) */ /* else node is parent */
+        /* → search rect in 4 quadrants */
+    {
+        pq->push(n->m_nw);
+        pq->push(n->m_ne);
+        pq->push(n->m_sw);
+        pq->push(n->m_se);
+
+        vert_neighbor_helper(pq, target, result);
+        vert_neighbor_helper(pq, target, result);
+        vert_neighbor_helper(pq, target, result);
+        vert_neighbor_helper(pq, target, result);
+
+        return;
+    }
+}
+
 /*******************************************************************************
 * DELETE
 *
@@ -422,8 +560,7 @@ Rect* QuadTree::delete_point(Point& p) {
 **
 * TRAVERSE
 */
-void QuadTree::traverse(TraversalType traversal_type, void (*process)(QuadNode*)
-) {
+void QuadTree::traverse(TraversalType traversal_type, void (*process)(QuadNode*)) {
 
     if (traversal_type == PREORDER) preorder(m_root, process);
     else if (traversal_type == POSTORDER) postorder(m_root, process);

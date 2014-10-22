@@ -32,6 +32,36 @@ QuadTreeApp::~QuadTreeApp() {
 * Functions
 **********************************************************/
 
+Message* QuadTreeApp::get_state() {
+
+    string output = "\nproduce_output(q.init_quadtree(" + to_string((int)pow(m_quadtree.get_width(),.5)) + "), cmd);";
+
+    /* print all rectangles in m_rect_list */
+    map<string, Rect>::iterator i;
+    Rect* r;
+
+    /* produce_output(q.create_rectangle("R3", 30, 30, 40, 40), cmd); */
+    for(i = m_rect_list.begin(); i != m_rect_list.end(); i++) {
+        r = &i->second;
+
+        output += "\nproduce_output(q.create_rectangle(";
+        output += "\""+ i->first + "\",";
+        output += to_string(r->m_x1) + "," + to_string(r->m_y1) + ",";
+        output += to_string(r->m_x2) + "," + to_string(r->m_y2) + "), cmd);";
+    }
+
+    /* print all rectangles in m_active_rects */
+    set<string>::iterator j;
+
+    /* produce_output(q.insert("R3"), cmd); */
+    for(j = m_active_rects.begin(); j != m_active_rects.end(); j++) {
+        output += "\nproduce_output(q.insert(";
+        output += "\""+ *j + "\"), cmd);";
+    }
+
+    return new Message(true, "", output);
+}
+
 /**************************************
 * TRACE
 *
@@ -419,6 +449,8 @@ Message* QuadTreeApp::insert(string r) {
 
         if (succ) /* rect is in bounds */
         {
+            m_active_rects.insert(target.m_name);
+
             return new Message(
                     true,
                     (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
@@ -500,6 +532,8 @@ Message* QuadTreeApp::delete_rectangle(string r) {
 
     if (succ) /* delete successful */
     {
+        m_active_rects.erase(target.m_name);
+
         return new Message(
                 true,
                 (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
@@ -534,6 +568,8 @@ Message* QuadTreeApp::delete_point(int x, int y) {
 
     if (deleted_rect != nullptr)
     {
+        m_active_rects.erase(deleted_rect->m_name);
+
         return new Message(
                 true,
                 (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
@@ -644,12 +680,89 @@ Message* QuadTreeApp::within(string r, int d) {
     }
 }
 
-void QuadTreeApp::horiz_neighbor(string name)
-{
+/******************************************************************************
+* HORIZ_NEIGHBOR(string R) :                                                                        (OPCODE = 12)
+*
+* Find the rectangle in the quadtree T with the minimum non-negative horizontal distance to R.
+* In other words, find the rectangle in T whose projection on the X-axis is closest to
+* the projection of R on the X-axis but does not intersect it. Nodes that have smaller horizontal
+* distance to the query rectangle should be visited first. All the nodes with negative
+* horizontal distance should be treated as having a horizontal distance of 0. If there are
+* multiple nodes with the same horizontal distance then the one with a smaller node number
+* should be visited first. You should avoid visiting quadtree nodes that are farther from
+* the query rectangle than the nearest rectangle found so far. You should print the
+* message “found rectangle S” where S is the result of the query. If no such rectangle
+* was found (i.e. if the quadtree is either empty or if all the rectangle in the quadtree
+* have negative horizontal distance to the query rectangle) then print the message “no rectangle found”.
+*/
+Message* QuadTreeApp::horiz_neighbor(string r) {
+
+    /* find rect in collection */
+    if (m_rect_list.find(r) == m_rect_list.end())
+        return new Message(true, "", "rectangle " + r + " not found in collection");
+
+    Rect target  = m_rect_list.find(r)->second;
+    Rect* result = nullptr;
+
+    result = m_quadtree.horiz_neighbor(target);
+
+    /* output result */
+    if (result != nullptr)
+    {
+        return new Message (
+                true,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                "found rectangle " + result->m_name
+        );
+    }
+    else
+    {
+        return new Message(
+                false,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                r + " does not have a horizontal neighbor"
+        );
+    }
 }
 
-void QuadTreeApp::vert_neighbor(string name)
-{
+
+/******************************************************************************
+* VERT_NEIGHBOR(string R) :                                                                         (OPCODE = 12)
+*
+* Find the rectangle in the quadtree T with the minimum non-negative vertical distance to R. For a
+* definition of vertical distance see Def. 5. If there are multiple rectangles that have the
+* minimum non-negative vertical distance to R then choose the one that was visited first during
+* the traversal of the quadtree. Traversal order and output message is similar to HORIZ_NEIGHBOR
+* except that instead of horizontal distance, vertical distance should be used.
+*/
+Message* QuadTreeApp::vert_neighbor(string r) {
+
+    /* find rect in collection */
+    if (m_rect_list.find(r) == m_rect_list.end())
+        return new Message(true, "", "rectangle " + r + " not found in collection");
+
+    Rect target     = m_rect_list.find(r)->second;
+    Rect* result    = nullptr;
+
+    result = m_quadtree.vert_neighbor(target);
+
+    /* output result */
+    if (result != nullptr)
+    {
+        return new Message (
+                true,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                "found rectangle " + result->m_name
+        );
+    }
+    else
+    {
+        return new Message(
+                false,
+                "",
+                r + " does not have a vertical neighbor"
+        );
+    }
 }
 
 void QuadTreeApp::nearest_rectangle(int x, int y)
