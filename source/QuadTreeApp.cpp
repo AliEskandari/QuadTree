@@ -211,7 +211,7 @@ Message* QuadTreeApp::create_rectangle(string r, int llx, int lly, int urx, int 
     if (r.length() > MAX_NAME_LEN) return new Message(false, "", "rectangle name is too long");
 
     /* check if rect is too small */
-    if (w < MinLX || h < MinLY) return new Message(false, "", "rectangle is too small");
+    if (w < MinLX && h < MinLY) return new Message(false, "", "rectangle is too small");
 
     /* create and add rectangle to rect_list */
     Rect rect = Rect(r, llx, lly, urx, ury);
@@ -550,9 +550,49 @@ Message* QuadTreeApp::delete_point(int x, int y) {
     }
 }
 
+/**************************************
+* TOUCH(string name) :                                                                              (OPCODE = 10)
+*
+* Search for all the rectangles in T that touch the rectangle R (but don’t intersect it).
+* Print the message “found N rectangles: R1 R2 ... ” where N is the number of rectangles in T
+* that touch R. and R1, R2, . . . are the names of those rectangles. You should print
+* the touching rectangles in the order they were visited first. You should traverse
+* the quadtree int the order of NW, NE, SW, SE to visit/print the rectangles in the correct order.
+*/
+Message* QuadTreeApp::touch(string r) {
 
-void QuadTreeApp::touch(std::string r)
-{
+    /* find rect in collection */
+    if (m_rect_list.find(r) == m_rect_list.end())
+        return new Message(true, "", "rectangle " + r + " not found in collection");
+
+    Rect target         = m_rect_list.find(r)->second;
+    set<Rect> *results  = nullptr;
+
+    results = m_quadtree.touch(target);
+
+    /* output results */
+    if (results != nullptr)
+    {
+        string output = "found " + to_string(results->size()) + " rectangles:";
+
+        set<Rect>::iterator i;
+        for (i = results->begin(); i != results->end(); i++) output += " " + (*i).m_name;
+
+        return new Message(
+                true,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                output,
+                (*results->begin()).m_name /* extra: first touch rect name */
+        );
+    }
+    else
+    {
+        return new Message(
+                false,
+                "",
+                r + " does not touch an existing rectangle"
+        );
+    }
 }
 
 void QuadTreeApp::within(std::string name, int dist)

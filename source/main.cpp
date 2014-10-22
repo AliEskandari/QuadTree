@@ -109,7 +109,7 @@ int main()
                 message = q.move(cmd[1], stoi(cmd[2]), stoi(cmd[3]));
         } else if (op == "TOUCH") {
             if (is_valid_op(10, cmd, 1))
-                q.touch(cmd[1]);
+                message = q.touch(cmd[1]);
         } else if (op == "WITHIN") {
             if (is_valid_op(11, cmd, 2))
                 q.within(cmd[1], stoi(cmd[2]));

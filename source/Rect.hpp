@@ -33,6 +33,8 @@ public:
     inline bool contains(Rect& r) { return ((m_x1 <= r.m_x1) && (m_y1 <= r.m_y1) && (r.m_x2 <= m_x2) && (r.m_y2 <= m_y2)); }
     inline bool intersects(Rect& r) { return ( max(m_x1, r.m_x1) < min(m_x2, r.m_x2) && max(m_y1, r.m_y1) < min(m_y2, r.m_y2)); }
     inline bool contains(Point& p) { return (m_x1 <= p.m_x && m_y1 <= p.m_y && p.m_x < m_x2 && p.m_y < m_y2); }
+    inline bool touches(Rect& r) { return ((!(r.m_x1 > m_x2 || r.m_x2 < m_x1) && (r.m_y1 == m_y2 || r.m_y2 == m_y1)) /* touches top or bottom */
+                || (!(r.m_y1 > m_y2 || r.m_y2 < m_y1) && (r.m_x1 == m_x2 || r.m_x2 == m_x1)));} /* touches left or right */
 
     inline bool operator ==(const Rect& r) { return m_x1 == r.m_x1 && m_y1 == r.m_y1 && m_x2 == r.m_x2 && m_y2 == r.m_y2; }
     inline bool operator !=(const Rect& r) { return !(*this == r); }

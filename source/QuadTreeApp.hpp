@@ -62,7 +62,7 @@ public:
     Message* delete_point(int x, int y);		        					    // op 8
 
     /* Part 4 */
-    void touch(string name);					    							// op 9
+    Message* touch(string name);					    						// op 9
     void within(string name, int dist);							    			// op 10
     void horiz_neighbor(string name);						    				// op 11
     void vert_neighbor(string name);						    				// op 11

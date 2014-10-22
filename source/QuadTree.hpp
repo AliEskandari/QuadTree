@@ -40,6 +40,7 @@ private:
     void                   search_point_helper(QuadNode* curr, Point& target, Rect** result);
     bool                   delete_rectangle_helper(QuadNode* curr, Rect& target);
     bool                   collapse(QuadNode* n);
+    void                   touch_helper(QuadNode* n, Rect& target, set<Rect> *results);
 public:
     QuadTree(int width);
     QuadTree();
@@ -61,7 +62,7 @@ public:
     Rect*                  delete_point(Point& p);                      // op 8
 
     /* Part 4 */
-    void 	               touch();								        // op 9
+    set<Rect>* 	           touch(Rect& target);						    // op 9
     void 	               within();								    // op 10
     void 	               horiz_neighbor();						    // op 11
     void 	               vert_neighbor();						        // op 11
