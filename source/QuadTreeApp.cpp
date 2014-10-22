@@ -595,8 +595,53 @@ Message* QuadTreeApp::touch(string r) {
     }
 }
 
-void QuadTreeApp::within(std::string name, int dist)
-{
+/******************************************************************************
+* WITHIN(string R, int d) :                                                                         (OPCODE = 11)
+*
+* Assume that R = ((x1,y1),(x2,y2)). Define the expansion of rectangle R by distance d to be
+* the rectangle R+d = ((x1 − d, y1 − d), (x2 + d, y2 + d)). Search for all the rectangles
+* in T that intersect the donut shaped region contained between R and R+d. A rectangle intersects
+* the region contained between R and R+d if and only if it intersects R+d and it is not
+* contained in R. Print the message “found N rectangles: R1 R2 ... ” where N is the number
+* of rectangles in T that intersect the region in R+d − R and R1, R2, . . . are the names of
+* those rectangles.
+*/
+Message* QuadTreeApp::within(string r, int d) {
+
+    /* find rect in collection */
+    if (m_rect_list.find(r) == m_rect_list.end())
+        return new Message(true, "", "rectangle " + r + " not found in collection");
+
+    Rect r1 = m_rect_list.find(r)->second;
+    Rect r2 = Rect(r1.m_x1 - d, r1.m_y1 - d, r1.m_x2 + d, r1.m_y2 + d);
+
+    set<Rect> *results = nullptr;
+
+    results = m_quadtree.within(r1,r2);
+
+    /* output results */
+    if (results != nullptr)
+    {
+        string output = "found " + to_string(results->size()) + " rectangles:";
+
+        set<Rect>::iterator i;
+        for (i = results->begin(); i != results->end(); i++) output += " " + (*i).m_name;
+
+        return new Message(
+                true,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                output,
+                (*results->begin()).m_name /* extra: first intersecting rect name */
+        );
+    }
+    else
+    {
+        return new Message(
+                false,
+                "",
+                r + "+" + to_string(d) + " - " + r + " does not intersect an existing rectangle"
+        );
+    }
 }
 
 void QuadTreeApp::horiz_neighbor(string name)

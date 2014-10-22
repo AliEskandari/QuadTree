@@ -112,7 +112,7 @@ int main()
                 message = q.touch(cmd[1]);
         } else if (op == "WITHIN") {
             if (is_valid_op(11, cmd, 2))
-                q.within(cmd[1], stoi(cmd[2]));
+                message = q.within(cmd[1], stoi(cmd[2]));
         } else if (op == "HORIZ_NEIGHBOR") {
             if (is_valid_op(12, cmd, 1))
                 q.horiz_neighbor(cmd[1]);

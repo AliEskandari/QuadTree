@@ -263,6 +263,55 @@ void QuadTree::touch_helper(QuadNode* n, Rect& target, set<Rect>* results) {
     }
 }
 
+/**/
+set<Rect>* QuadTree::within(Rect& r1, Rect& r2) {
+
+    start_trace();
+
+    set<Rect> *results = new set<Rect>;
+    within_helper(m_root, r1, r2, results);
+
+    if (results->size() == 0)
+    {
+        delete results;
+        return nullptr;
+    }
+    else
+    {
+        return results;
+    }
+}
+
+void QuadTree::within_helper(QuadNode* n, Rect& r1, Rect& r2, set<Rect>* results) {
+
+    visit(n);
+
+    /* return if target does not enter node's bounds */
+    if (!(n->m_bounds.intersects(r2))) return;
+
+    if (n->m_type == WHITE) /* if node is empty */
+        /* → return */
+    {
+        return;
+    }
+    else if (n->m_type == BLACK) /* else if node has rect data */
+        /* → check if data intersects target, return */
+    {
+        if (n->m_rect.intersects(r2) && !n->m_rect.contains(r1)) results->insert(n->m_rect);
+        return;
+    }
+    else /* (n->m_type == GRAY) */ /* else node is parent */
+        /* → search rect in 4 quadrants */
+    {
+        within_helper(n->m_nw, r1, r2, results);
+        within_helper(n->m_ne, r1, r2, results);
+        within_helper(n->m_sw, r1, r2, results);
+        within_helper(n->m_se, r1, r2, results);
+
+        return;
+    }
+}
+
 /*******************************************************************************
 * DELETE
 *

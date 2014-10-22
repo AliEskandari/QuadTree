@@ -63,7 +63,7 @@ public:
 
     /* Part 4 */
     Message* touch(string name);					    						// op 9
-    void within(string name, int dist);							    			// op 10
+    Message* within(string name, int dist);							    		// op 10
     void horiz_neighbor(string name);						    				// op 11
     void vert_neighbor(string name);						    				// op 11
     void nearest_rectangle(int x, int y);					    				// op 12

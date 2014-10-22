@@ -41,6 +41,7 @@ private:
     bool                   delete_rectangle_helper(QuadNode* curr, Rect& target);
     bool                   collapse(QuadNode* n);
     void                   touch_helper(QuadNode* n, Rect& target, set<Rect> *results);
+    void                   within_helper(QuadNode* n, Rect& r1, Rect& r2, set<Rect> *results);
 public:
     QuadTree(int width);
     QuadTree();
@@ -63,7 +64,7 @@ public:
 
     /* Part 4 */
     set<Rect>* 	           touch(Rect& target);						    // op 9
-    void 	               within();								    // op 10
+    set<Rect>* 	           within(Rect& r1, Rect& r2);					// op 10
     void 	               horiz_neighbor();						    // op 11
     void 	               vert_neighbor();						        // op 11
     void 	               nearest_rectangle();					        // op 12
