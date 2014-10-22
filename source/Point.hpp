@@ -17,8 +17,6 @@ public:
 
     inline const Point operator -(Point p) { return Point(m_x - p.m_x, m_y - p.m_y); }
     inline bool operator <(const Point& p) const { return (m_x < p.m_x && m_y < p.m_y); }
-
-//    static inline Point max(Point a, Point b) { return a < b ? b : a; }
 };
 
 

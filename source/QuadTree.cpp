@@ -64,10 +64,10 @@ bool QuadTree::insert(Rect& data) {
 
 QuadNode* QuadTree::qt_insert_helper(QuadNode* n, Rect& data) {
 
-    visit(n);
-
     /* if data does not enter node's bounds then return */
     if (!n->m_bounds.intersects(data)) return n;
+
+    visit(n);
 
     if (n->m_type == WHITE) /* if node has space */
         /* → set data */
@@ -141,10 +141,10 @@ set<Rect>* QuadTree::search_rectangle(Rect& target) {
 
 void QuadTree::search_rectangle_helper(QuadNode* n, Rect& target, set<Rect> *results) {
 
-    visit(n);
-
     /* return if target does not enter node's bounds */
     if (!(n->m_bounds.intersects(target))) return;
+
+    visit(n);
 
     if (n->m_type == WHITE) /* if node is empty */
         /* → return */
@@ -186,10 +186,10 @@ Rect* QuadTree::search_point(Point& p) {
 
 void QuadTree::search_point_helper(QuadNode* n, Point& target, Rect **result) {
 
-    visit(n);
-
     /* don't consider node if target is not inside node's bounds */
     if (!n->m_bounds.contains(target)) return;
+
+    visit(n);
 
     if (n->m_type == WHITE) /* if node is empty */
         /* → return */
@@ -236,10 +236,10 @@ set<Rect>* QuadTree::touch(Rect& target) {
 
 void QuadTree::touch_helper(QuadNode* n, Rect& target, set<Rect>* results) {
 
-    visit(n);
-
     /* return if target does not enter node's bounds */
     if (!(n->m_bounds.intersects(target))) return;
+
+    visit(n);
 
     if (n->m_type == WHITE) /* if node is empty */
         /* → return */
@@ -285,10 +285,10 @@ set<Rect>* QuadTree::within(Rect& r1, Rect& r2) {
 
 void QuadTree::within_helper(QuadNode* n, Rect& r1, Rect& r2, set<Rect>* results) {
 
-    visit(n);
-
     /* return if target does not enter node's bounds */
     if (!(n->m_bounds.intersects(r2))) return;
+
+    visit(n);
 
     if (n->m_type == WHITE) /* if node is empty */
         /* → return */
@@ -566,6 +566,76 @@ void QuadTree::window_helper(QuadNode *n, Rect &target, set<Rect> *results) {
 
 }
 
+Rect* QuadTree::nearest_neighbor(Rect &target) {
+
+    start_trace();
+
+    /* create priority queue keyed on min horizontal distance to target */
+    QuadNodeToRectPQ * pq = new QuadNodeToRectPQ(CompareDistanceToRect(target, DIAGONAL));
+    pq->push(m_root);
+
+    /* find min vertical neighbor */
+    Rect* result    = nullptr;
+    nearest_neighbor_helper(pq, target, &result);
+
+    /* cleanup */
+    delete pq;
+
+    return result;
+}
+
+void QuadTree::nearest_neighbor_helper(QuadNodeToRectPQ* pq, Rect& target, Rect **result) {
+
+    /* stop when queue is empty */
+    if(pq->empty()) return;
+
+    /* grab next node with smallest vertical distance to target rect */
+    QuadNode* n = pq->top();
+    pq->pop();
+
+    int node_to_target = n->m_bounds.distance(target);
+    int result_to_target = (*result == nullptr) ? m_width : target.distance(**result);
+
+    /**
+    *  don't consider node if:
+    *  - it is farther from target rect than nearest rect found so far
+    *  - target rect contains node because any rect in node will be invalid (intersects target) */
+    if (target.contains(n->m_rect) || node_to_target >= result_to_target) return;
+
+    visit(n);
+
+    if (n->m_type == WHITE) /* if node is empty */
+        /* → return */
+    {
+        return;
+    }
+    else if (n->m_type == BLACK) /* else if node has rect data */
+        /* → check if data is has smaller vertical distance, return */
+    {
+        int rect_to_target  = n->m_rect.distance(target);
+
+        /* if distance is valid and less than previous min set as result */
+        if (!n->m_rect.intersects(target) && rect_to_target < result_to_target) *result = &(n->m_rect);
+
+        return;
+    }
+    else /* (m_type == GRAY) */ /* else node is parent */
+        /* → search rect in 4 quadrants */
+    {
+        pq->push(n->m_nw);
+        pq->push(n->m_ne);
+        pq->push(n->m_sw);
+        pq->push(n->m_se);
+
+        nearest_neighbor_helper(pq, target, result);
+        nearest_neighbor_helper(pq, target, result);
+        nearest_neighbor_helper(pq, target, result);
+        nearest_neighbor_helper(pq, target, result);
+
+        return;
+    }
+}
+
 /*******************************************************************************
 * DELETE
 *
@@ -584,10 +654,10 @@ bool QuadTree::delete_rectangle(Rect& target) {
 
 bool QuadTree::delete_rectangle_helper(QuadNode *curr, Rect &target) {
 
-    visit(curr);
-
     /* if target does not enter node's bounds → return */
     if (!curr->m_bounds.intersects(target)) return false;
+
+    visit(curr);
 
     if (curr->m_type == WHITE) /* if node is empty */
         /* → return */
@@ -621,8 +691,7 @@ bool QuadTree::delete_rectangle_helper(QuadNode *curr, Rect &target) {
 bool QuadTree::collapse(QuadNode* parent) {
 
     /* quadrants are either white or black & at least one is black */
-    QuadNode *quadrants[4] = {parent->m_nw, parent->m_ne, parent->m_sw, parent->
-            m_se};
+    QuadNode *quadrants[4] = {parent->m_nw, parent->m_ne, parent->m_sw, parent->m_se};
 
     /* look for common rect in all 4 quads */
     Rect *common = nullptr;

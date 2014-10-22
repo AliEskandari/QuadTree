@@ -31,7 +31,6 @@ QuadTreeApp::~QuadTreeApp() {
 /**********************************************************
 * Functions
 **********************************************************/
-
 Message* QuadTreeApp::get_state() {
 
     string output = "\nproduce_output(q.init_quadtree(" + to_string((int)pow(m_quadtree.get_width(),.5)) + "), cmd);";
@@ -844,9 +843,50 @@ Message* QuadTreeApp::window(int x1, int x2, int y1, int y2) {
     }
 }
 
-void QuadTreeApp::nearest_neighbor(string name)
-{
+/******************************************************************************
+* NEAREST_NEIGHBOR(string R) :                                                                      (OPCODE = 14)
+*
+* Find the rectangle in the quadtree T that is closest to R but does not intersect R.
+* The distance between two rectangles is the length of the shortest line segment
+* connecting them. If there are multiple rectangles that have the minimum distance
+* to R then choose the one that was visited first during the traversal of the quadtree.
+* Traversal order and output message is similar to HORIZ_NEIGHBOR except that instead
+* of horizontal distance, the euclidian distance of the quadtree nodes to R should be used.
+* If a quadtree node intersects with R then its distance to R is considered to be 0.
+* Also note that you should not visit quadtree nodes that are entirely contained in R
+* because they cannot possibly contain a rectangle that does not intersect with R.
+*/
+Message* QuadTreeApp::nearest_neighbor(string r) {
+
+    /* find rect in collection */
+    if (m_rect_list.find(r) == m_rect_list.end())
+        return new Message(true, "", "rectangle " + r + " not found in collection");
+
+    Rect target  = m_rect_list.find(r)->second;
+    Rect* result = nullptr;
+
+    result = m_quadtree.nearest_neighbor(target);
+
+    /* output result */
+    if (result != nullptr)
+    {
+        return new Message (
+                true,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                "found rectangle " + result->m_name
+        );
+    }
+    else
+    {
+        return new Message(
+                false,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                "no rectangle found"
+        );
+    }
+
 }
+
 
 void QuadTreeApp::lexically_greater_nearest_neighbor(string name)
 {

@@ -51,6 +51,7 @@ private:
     void                   vert_neighbor_helper(QuadNodeToRectPQ * pq, Rect& target, Rect** result);
     void                   nearest_rectangle_helper(QuadNodeToPointPQ * pq, Point& target, Rect** result);
     void                   window_helper(QuadNode* n, Rect& target, set<Rect> *results);
+    void                   nearest_neighbor_helper(QuadNodeToRectPQ* pq, Rect& target, Rect** result);
 
 public:
     QuadTree(int width);
@@ -79,7 +80,7 @@ public:
     Rect* 	               vert_neighbor(Rect& target);				    // op 11
     Rect* 	               nearest_rectangle(Point& target);			// op 12
     set<Rect>* 	           window(Rect& target);						// op 13
-    void 	               nearest_neighbor();						    // op 14
+    Rect* 	               nearest_neighbor(Rect& target);				// op 14
     void 	               lexically_greater_nearest_neighbor();	    // op 15
     void 	               label();								        // op 16
 };

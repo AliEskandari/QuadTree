@@ -143,7 +143,7 @@ int main()
                 message = q.window(stoi(cmd[1]), stoi(cmd[2]), stoi(cmd[3]), stoi(cmd[4]));
         } else if (op == "NEAREST_NEIGHBOR") {
             if (is_valid_op(15, cmd, 1))
-                q.nearest_neighbor(cmd[1]);
+                message = q.nearest_neighbor(cmd[1]);
         } else if (op == "LEXICALLY_GREATER_NEAREST_NEIGHBOR") {
             if (is_valid_op(16, cmd, 1))
                 q.lexically_greater_nearest_neighbor(cmd[1]);

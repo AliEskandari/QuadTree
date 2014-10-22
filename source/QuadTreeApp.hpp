@@ -71,7 +71,7 @@ public:
     Message* vert_neighbor(string r);						    				// op 11
     Message* nearest_rectangle(int x, int y);					    			// op 12
     Message* window(int x1, int x2, int y1, int y2);			    			// op 13
-    void nearest_neighbor(string name);						    				// op 14
+    Message* nearest_neighbor(string name);						    			// op 14
     void lexically_greater_nearest_neighbor(string name);	    				// op 15
     void label();											    				// op 16
 };
