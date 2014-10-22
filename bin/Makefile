@@ -25,10 +25,10 @@ drawing.o: drawing.c drawing_c.h
 QuadNode.o: QuadNode.cpp Rect.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
-Point.o: Point.cpp Rect.cpp
+Point.o: Point.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
-Rect.o: Rect.cpp
+Rect.o: Rect.cpp Point.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:

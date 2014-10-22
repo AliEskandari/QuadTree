@@ -137,10 +137,10 @@ int main()
                 message = q.vert_neighbor(cmd[1]);
         } else if (op == "NEAREST_RECTANGLE") {
             if (is_valid_op(13, cmd, 2))
-                q.nearest_rectangle(stoi(cmd[1]), stoi(cmd[2]));
+                message = q.nearest_rectangle(stoi(cmd[1]), stoi(cmd[2]));
         } else if (op == "WINDOW") {
             if (is_valid_op(14, cmd, 4))
-                q.window(stoi(cmd[1]), stoi(cmd[2]), stoi(cmd[3]), stoi(cmd[4]));
+                message = q.window(stoi(cmd[1]), stoi(cmd[2]), stoi(cmd[3]), stoi(cmd[4]));
         } else if (op == "NEAREST_NEIGHBOR") {
             if (is_valid_op(15, cmd, 1))
                 q.nearest_neighbor(cmd[1]);

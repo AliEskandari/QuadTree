@@ -7,3 +7,4 @@ sublime/
 .cproject
 makefile~
 main
+bin/#Makefile#

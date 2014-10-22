@@ -725,7 +725,6 @@ Message* QuadTreeApp::horiz_neighbor(string r) {
     }
 }
 
-
 /******************************************************************************
 * VERT_NEIGHBOR(string R) :                                                                         (OPCODE = 12)
 *
@@ -765,12 +764,84 @@ Message* QuadTreeApp::vert_neighbor(string r) {
     }
 }
 
-void QuadTreeApp::nearest_rectangle(int x, int y)
-{
+/******************************************************************************
+* NEAREST_RECTANGLE(string R) :                                                                     (OPCODE = 13)
+*
+* Given a point, return the name of the nearest rectangle. By “nearest,” it is meant the
+* rectangle whose side or corner is closest to the point. Note that this rectangle
+* could also be a rectangle that contains the point. In this case, the distance is zero.
+* It is invoked by the command NEAREST_RECTANGLE(PX,PY) where PX and PY are the x and y
+* coordinate values, respectively, of the point. If no such rectangle exists
+* (e.g., when the tree is empty), then output an appropriate message (i.e., that the tree is empty).
+* If more than one rectangle is at the same distance, then return the name of just one of them.
+*/
+Message* QuadTreeApp::nearest_rectangle(int x, int y) {
+
+    Point target = Point(x,y);
+    Rect* result = nullptr;
+
+    result = m_quadtree.nearest_rectangle(target);
+
+    /* output result */
+    if (result != nullptr)
+    {
+        return new Message (
+                true,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                "found rectangle " + result->m_name
+        );
+    }
+    else
+    {
+        return new Message(
+                false,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                 "no rectangle found"
+        );
+    }
 }
 
-void QuadTreeApp::window(int x1, int x2, int y1, int y2)
-{
+/******************************************************************************
+* WINDOW(int x1, int y1, int x2, int y2) :                                                          (OPCODE = 13)
+*
+* Search for all the rectangles in T that are entirely contained in the rectangle with lower
+* left corner at (x1, y1) and upper right corner at (x2, y2). Print the message
+* “found N rectangles: R1 R2 ... ” where N is the number of rectangles in T that are entirely
+* within the query rectangle and R1, R2, . . . are the names of those rectangles.
+* You should print the contained rectangles in the order they were visited first. You should
+* traverse the quadtree in the order of NW, NE, SW, SE to visit/print the rectangles in
+* the correct order.
+*/
+Message* QuadTreeApp::window(int x1, int x2, int y1, int y2) {
+
+    Rect target         = Rect(x1,y1,x2,y2);
+    set<Rect> *results  = nullptr;
+
+    results = m_quadtree.window(target);
+
+    /* output results */
+    if (results != nullptr)
+    {
+        string output = "found " + to_string(results->size()) + " rectangles:";
+
+        set<Rect>::iterator i;
+        for (i = results->begin(); i != results->end(); i++) output += " " + (*i).m_name;
+
+        return new Message(
+                true,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                output,
+                (*results->begin()).m_name /* extra: first touch rect name */
+        );
+    }
+    else
+    {
+        return new Message(
+                false,
+                "",
+                "no rectangles found in window"
+        );
+    }
 }
 
 void QuadTreeApp::nearest_neighbor(string name)

@@ -65,4 +65,19 @@ public:
     }
 };
 
+class CompareDistanceToPoint {
+    Point target;
+
+public:
+    CompareDistanceToPoint(Point target) : target(target) {}
+
+    bool operator()(QuadNode* const & n1, QuadNode* const & n2) {
+
+        int d1 = n1->m_bounds.distance(target);
+        int d2 = n2->m_bounds.distance(target);
+        if (d1 == d2) return n1->m_label < n2->m_label;
+        else return d1 < d2;
+    }
+};
+
 #endif
