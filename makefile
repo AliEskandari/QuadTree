@@ -1,20 +1,6 @@
-CC = g++
-DEBUG = -g
-CFLAGS = -Wall -c $(DEBUG)
-LFLAGS = -Wall $(DEBUG)
 
-SRCS := $(wildcard *.cpp)
-OBJS = $(SRCS:.cpp=.o)
+all:
+	$(MAKE) -C ./bin/
 
-EXE = main
-
-all : $(EXE)
-
-$(EXE) : $(OBJS)
-	$(CC) $(OBJS) -o $@
-
-%.o : %.cpp
-	$(CC) $(CFLAGS) $< -o $@
-
-clean :
-	rm -f $(OBJS) $(EXE)
+clean:
+	rm -f ./bin/*o

@@ -1,3 +1,8 @@
-main.o
-QuadTree.o
-QuadTreeApp.o
+*.o
+.DS_Store
+*~
+.idea/
+sublime/
+.project
+.cproject
+makefile~
