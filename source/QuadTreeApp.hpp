@@ -33,7 +33,7 @@ class QuadTreeApp
 private:
     QuadTree                        m_quadtree;
     map<string, Rect>               m_rect_list;
-    set<string>                     m_active_rects;
+    set<Rect>                       m_active_rects;
     bool                            m_should_trace;
 
 public:
@@ -73,7 +73,7 @@ public:
     Message* window(int x1, int x2, int y1, int y2);			    			// op 13
     Message* nearest_neighbor(string name);						    			// op 14
     void lexically_greater_nearest_neighbor(string name);	    				// op 15
-    void label();											    				// op 16
+    Message* label();											    			// op 16
 };
 
 

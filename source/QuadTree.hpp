@@ -45,7 +45,7 @@ private:
     void                   search_point_helper(QuadNode* curr, Point& target, Rect** result);
     bool                   delete_rectangle_helper(QuadNode* curr, Rect& target);
     bool                   collapse(QuadNode* n);
-    void                   touch_helper(QuadNode* n, Rect& target, set<Rect> *results);
+    void                   touch_helper(QuadNode* n, const Rect& target, set<Rect> *results);
     void                   within_helper(QuadNode* n, Rect& r1, Rect& r2, set<Rect> *results);
     void                   horiz_neighbor_helper(QuadNodeToRectPQ * pq, Rect& target, Rect** result);
     void                   vert_neighbor_helper(QuadNodeToRectPQ * pq, Rect& target, Rect** result);
@@ -74,7 +74,7 @@ public:
     Rect*                  delete_point(Point& p);                      // op 8
 
     /* Part 4 */
-    set<Rect>* 	           touch(Rect& target);						    // op 9
+    set<Rect>* 	           touch(const Rect& target);				    // op 9
     set<Rect>* 	           within(Rect& r1, Rect& r2);					// op 10
     Rect* 	               horiz_neighbor(Rect& target);			    // op 11
     Rect* 	               vert_neighbor(Rect& target);				    // op 11

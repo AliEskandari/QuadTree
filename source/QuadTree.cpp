@@ -216,7 +216,7 @@ void QuadTree::search_point_helper(QuadNode* n, Point& target, Rect **result) {
 }
 
 /**/
-set<Rect>* QuadTree::touch(Rect& target) {
+set<Rect>* QuadTree::touch(const Rect& target) {
 
     start_trace();
 
@@ -234,10 +234,7 @@ set<Rect>* QuadTree::touch(Rect& target) {
     }
 }
 
-void QuadTree::touch_helper(QuadNode* n, Rect& target, set<Rect>* results) {
-
-    /* return if target does not enter node's bounds */
-    if (!(n->m_bounds.intersects(target))) return;
+void QuadTree::touch_helper(QuadNode* n, const Rect& target, set<Rect>* results) {
 
     visit(n);
 
@@ -247,7 +244,7 @@ void QuadTree::touch_helper(QuadNode* n, Rect& target, set<Rect>* results) {
         return;
     }
     else if (n->m_type == BLACK) /* else if node has rect data */
-        /* → check if data touchees target, return */
+        /* → check if data touches target, return */
     {
         if (n->m_rect.touches(target)) results->insert(n->m_rect);
         return;
@@ -742,7 +739,6 @@ Rect* QuadTree::delete_point(Point& p) {
 }
 
 /*******************************************************************************
-**
 * TRAVERSE
 */
 void QuadTree::traverse(TraversalType traversal_type, void (*process)(QuadNode*)) {

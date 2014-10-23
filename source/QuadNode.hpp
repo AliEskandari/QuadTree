@@ -71,7 +71,7 @@ class CompareDistanceToPoint {
 public:
     CompareDistanceToPoint(Point target) : target(target) {}
 
-    bool operator()(QuadNode* const & n1, QuadNode* const & n2) {
+    bool operator() (QuadNode* const & n1, QuadNode* const & n2) {
 
         int d1 = n1->m_bounds.distance(target);
         int d2 = n2->m_bounds.distance(target);

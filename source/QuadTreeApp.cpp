@@ -1,4 +1,6 @@
 #include <map>
+#include <vector>
+#include <set>
 #include <math.h>
 #include <cstring>
 #include "drawing/drawing.c"
@@ -50,12 +52,12 @@ Message* QuadTreeApp::get_state() {
     }
 
     /* print all rectangles in m_active_rects */
-    set<string>::iterator j;
+    set<Rect>::iterator j;
 
     /* produce_output(q.insert("R3"), cmd); */
     for(j = m_active_rects.begin(); j != m_active_rects.end(); j++) {
         output += "\nproduce_output(q.insert(";
-        output += "\""+ *j + "\"), cmd);";
+        output += "\""+ (*j).m_name + "\"), cmd);";
     }
 
     return new Message(true, "", output);
@@ -448,7 +450,7 @@ Message* QuadTreeApp::insert(string r) {
 
         if (succ) /* rect is in bounds */
         {
-            m_active_rects.insert(target.m_name);
+            m_active_rects.insert(target);
 
             return new Message(
                     true,
@@ -531,7 +533,7 @@ Message* QuadTreeApp::delete_rectangle(string r) {
 
     if (succ) /* delete successful */
     {
-        m_active_rects.erase(target.m_name);
+        m_active_rects.erase(target);
 
         return new Message(
                 true,
@@ -567,7 +569,7 @@ Message* QuadTreeApp::delete_point(int x, int y) {
 
     if (deleted_rect != nullptr)
     {
-        m_active_rects.erase(deleted_rect->m_name);
+        m_active_rects.erase(*deleted_rect);
 
         return new Message(
                 true,
@@ -795,7 +797,7 @@ Message* QuadTreeApp::nearest_rectangle(int x, int y) {
         return new Message(
                 false,
                 (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
-                 "no rectangle found"
+                "no rectangle found"
         );
     }
 }
@@ -884,7 +886,6 @@ Message* QuadTreeApp::nearest_neighbor(string r) {
                 "no rectangle found"
         );
     }
-
 }
 
 
@@ -892,6 +893,115 @@ void QuadTreeApp::lexically_greater_nearest_neighbor(string name)
 {
 }
 
-void QuadTreeApp::label()
-{
+/******************************************************************************
+* LABEL() :                                                                                         (OPCODE = 16)
+*
+* You should do a connected component labeling of the rectangles in the quadtree.
+* Two rectangles are considered to be connected if they are touching (either a side or a corner).
+* You should then print the message “found N connected components: ” where N is the total
+* number of connected components. Then, starting from the next line, print a list of all
+* the rectangles in the quadtree in the ascending order of their names. For each rectangle
+* print one line containing its name followed by the name of the rectangle in its connected
+* component that has the lexicographically smallest name in that connected component.
+*/
+Message* QuadTreeApp::label() {
+
+    set< pair<Rect,Rect> >                      touch_pairs;
+    set< pair<Rect,Rect> >                      components;
+    set<Rect>::const_iterator                   i;
+    set<Rect>::iterator                         j;
+    set< pair<Rect,Rect> >::iterator            k;
+    set< pair<Rect,Rect> >::reverse_iterator    m;
+    set< pair<Rect,Rect> >::iterator            l;
+    map<Rect, Rect>                             smallest_connected_component;
+    map<Rect,Rect>::iterator                    end = smallest_connected_component.end();
+    int                                         num_connected_components = 0;
+
+    /**
+    * for each active rect:
+    * - get set of directly connected rectangles
+    * - add every touch pair to set of touch pairs */
+    for (i = m_active_rects.begin(); i != m_active_rects.end(); i++) {
+
+        /* get set of rectangles that i touches */
+        set<Rect>* touched_rects = m_quadtree.touch(*i);
+
+        /* for each touched rectangle, add the pair to touch_pairs */
+        if (touched_rects != nullptr) {
+
+            for (j = touched_rects->begin(); j != touched_rects->end(); j++) {
+
+                pair<Rect,Rect> pair(*i,*j);
+                touch_pairs.insert(pair);
+            }
+        }
+
+        /* add touch pair of active rectangle and itself */
+        pair<Rect,Rect> pair(*i,*i);
+        touch_pairs.insert(pair);
+    }
+
+    /**
+    * for every touch pair, given to us in sorted order b/c of set:
+    * */
+    for (k = touch_pairs.begin(); k != touch_pairs.end(); k++) {
+
+        if (smallest_connected_component.find(k->first) != end)
+        {
+            /* do nothing */
+        }
+        else if (smallest_connected_component.find(k->second) != end)
+            /* don't have 1st smallest connected component stored but have the second */
+        {
+            /* set smallest connected component of 1st to be equal to that of 2nd */
+            smallest_connected_component[k->first] = smallest_connected_component[k->second];
+        }
+        else
+            /* don't have either smallest connected components */
+        {
+            /* store 2nd as smallest connected component of 1st, we can do this because pairs are sorted */
+            smallest_connected_component[k->first] = k->second;
+            num_connected_components++;
+        }
+    }
+
+    /* add new touch pairs to components in reverse in form of (first, smallest_connected_component[second])*/
+    for (m = touch_pairs.rbegin(); m != touch_pairs.rend(); m++) {
+
+        if (smallest_connected_component.find(m->second) != end
+                && smallest_connected_component[m->first] > smallest_connected_component[m->second])
+        {
+            smallest_connected_component[m->first] = smallest_connected_component[m->second];
+            num_connected_components--;
+        }
+
+        pair<Rect,Rect> component(m->first, smallest_connected_component[m->first]);
+        components.insert(component);
+    }
+
+    /* create output string */
+    string output = "found " + to_string(num_connected_components) + " connected components: ";
+
+    for (l = components.begin(); l != components.end(); l++) {
+
+        output += "\n"+ l->first.m_name + " " + l->second.m_name;
+    }
+
+    /* output result */
+    if (touch_pairs.size() != 0)
+    {
+        return new Message (
+                true,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                output
+        );
+    }
+    else
+    {
+        return new Message(
+                false,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                "no connected components found"
+        );
+    }
 }

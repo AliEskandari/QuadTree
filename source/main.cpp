@@ -65,8 +65,11 @@ int main()
         produce_output(q.insert("R3"), cmd);
         produce_output(q.insert("R4"), cmd);
         produce_output(q.insert("S1"), cmd);
+        produce_output(q.insert("S2"), cmd);
         produce_output(q.insert("S3"), cmd);
-        produce_output(q.horiz_neighbor("R2"), cmd);
+        produce_output(q.label(), cmd);
+        produce_output(q.insert("S4"), cmd);
+        produce_output(q.label(), cmd);
 
         return 0;
     }
@@ -75,7 +78,6 @@ int main()
     do {
         /* get line from stdin */
         cin.getline(line, MAX_STRING_LEN); // TODO: check to see if line data is erased when reusing
-        if (cin.eof()) return 0;
         cmd.clear();
 
         /* split line into tokens */
@@ -149,7 +151,7 @@ int main()
                 q.lexically_greater_nearest_neighbor(cmd[1]);
         } else if (op == "LABEL") {
             if (is_valid_op(17, cmd, 0))
-                q.label();
+                message = q.label();
         } else if (op == "TRACE") {
             transform(cmd[1].begin(), cmd[1].end(), cmd[1].begin(), ::toupper);
             if (cmd[1] == "ON" || cmd[1] == "OFF") message = q.set_trace(cmd[1] == "ON" ? ON : OFF);
@@ -165,6 +167,8 @@ int main()
         produce_output(message, cmd);
         delete message;
         message = nullptr;
+
+        if (cin.eof()) return 0;
 
 	} /* QUIT exits the program */
     while (op != "QUIT");

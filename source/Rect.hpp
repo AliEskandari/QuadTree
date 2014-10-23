@@ -34,9 +34,9 @@ public:
     int             m_w,m_h;
 
     inline bool contains(Rect& r) { return ((m_x1 <= r.m_x1) && (m_y1 <= r.m_y1) && (r.m_x2 <= m_x2) && (r.m_y2 <= m_y2)); }
-    inline bool intersects(Rect& r) { return ( max(m_x1, r.m_x1) < min(m_x2, r.m_x2) && max(m_y1, r.m_y1) < min(m_y2, r.m_y2)); }
+    inline bool intersects(const Rect& r) { return ( max(m_x1, r.m_x1) < min(m_x2, r.m_x2) && max(m_y1, r.m_y1) < min(m_y2, r.m_y2)); }
     inline bool contains(Point& p) { return (m_x1 <= p.m_x && m_y1 <= p.m_y && p.m_x < m_x2 && p.m_y < m_y2); }
-    inline bool touches(Rect& r) { return ((!(r.m_x1 > m_x2 || r.m_x2 < m_x1) && (r.m_y1 == m_y2 || r.m_y2 == m_y1)) /* touches top or bottom */
+    inline bool touches(const Rect& r) { return ((!(r.m_x1 > m_x2 || r.m_x2 < m_x1) && (r.m_y1 == m_y2 || r.m_y2 == m_y1)) /* touches top or bottom */
                 || (!(r.m_y1 > m_y2 || r.m_y2 < m_y1) && (r.m_x1 == m_x2 || r.m_x2 == m_x1)));} /* touches left or right */
 
     /* will return 0 if rectangles intersect or touch horizontally/vertically, positive otherwise */
@@ -51,16 +51,10 @@ public:
     inline bool operator !=(const Rect& r) { return !(*this == r); }
 };
 
-namespace std
-{
-    template <>
-    struct less<Rect>
-    {
-        bool operator() (const Rect lhs, const Rect rhs)
-        {
-            return lhs.m_name < rhs.m_name;
-        }
-    };
+inline bool operator <(const Rect& lhs, const Rect& rhs) { return lhs.m_name < rhs.m_name; }
+inline bool operator >(const Rect& lhs, const Rect& rhs) { return lhs.m_name > rhs.m_name; }
+
+inline string to_string (const Rect& r) { return r.m_name+" "+to_string(r.m_x1)+" "+to_string(r.m_y1)+" "+to_string(r.m_x2)+" "+to_string(r.m_y2);
 }
 
 
