@@ -52,6 +52,8 @@ private:
     void                   nearest_rectangle_helper(QuadNodeToPointPQ * pq, Point& target, Rect** result);
     void                   window_helper(QuadNode* n, Rect& target, set<Rect> *results);
     void                   nearest_neighbor_helper(QuadNodeToRectPQ* pq, Rect& target, Rect** result);
+    void                   lexically_greater_nearest_neighbor_helper(QuadNodeToRectPQ* pq, Rect& target, Rect** result);
+
 
 public:
     QuadTree(int width);
@@ -68,21 +70,21 @@ public:
 
     /* Part 3 */
     set<Rect>*             search_rectangle(Rect& target);
-    bool                   insert(Rect& data);                          // op 6
-    Rect*                  search_point(Point& p);                      // op 7
-    bool                   delete_rectangle(Rect& target);              // op 8
-    Rect*                  delete_point(Point& p);                      // op 8
+    bool                   insert(Rect& data);                                  // op 6
+    Rect*                  search_point(Point& p);                              // op 7
+    bool                   delete_rectangle(Rect& target);                      // op 8
+    Rect*                  delete_point(Point& p);                              // op 8
 
     /* Part 4 */
-    set<Rect>* 	           touch(const Rect& target);				    // op 9
-    set<Rect>* 	           within(Rect& r1, Rect& r2);					// op 10
-    Rect* 	               horiz_neighbor(Rect& target);			    // op 11
-    Rect* 	               vert_neighbor(Rect& target);				    // op 11
-    Rect* 	               nearest_rectangle(Point& target);			// op 12
-    set<Rect>* 	           window(Rect& target);						// op 13
-    Rect* 	               nearest_neighbor(Rect& target);				// op 14
-    void 	               lexically_greater_nearest_neighbor();	    // op 15
-    void 	               label();								        // op 16
+    set<Rect>* 	           touch(const Rect& target);				            // op 9
+    set<Rect>* 	           within(Rect& r1, Rect& r2);					        // op 10
+    Rect* 	               horiz_neighbor(Rect& target);			            // op 11
+    Rect* 	               vert_neighbor(Rect& target);				            // op 11
+    Rect* 	               nearest_rectangle(Point& target);			        // op 12
+    set<Rect>* 	           window(Rect& target);						        // op 13
+    Rect* 	               nearest_neighbor(Rect& target);				        // op 14
+    Rect* 	               lexically_greater_nearest_neighbor(Rect& target);	// op 15
+    void 	               label();								                // op 16
 };
 
 

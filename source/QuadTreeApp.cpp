@@ -813,7 +813,7 @@ Message* QuadTreeApp::nearest_rectangle(int x, int y) {
 * traverse the quadtree in the order of NW, NE, SW, SE to visit/print the rectangles in
 * the correct order.
 */
-Message* QuadTreeApp::window(int x1, int x2, int y1, int y2) {
+Message* QuadTreeApp::window(int x1, int y1, int x2, int y2) {
 
     Rect target         = Rect(x1,y1,x2,y2);
     set<Rect> *results  = nullptr;
@@ -888,9 +888,43 @@ Message* QuadTreeApp::nearest_neighbor(string r) {
     }
 }
 
+/******************************************************************************
+* LEXICALLY_GREATER_NEAREST_NEIGHBOR(string R) :                                                    (OPCODE = 15)
+*
+* This is similar to NEAREST_NEIGHBOR except that you should only consider the
+* rectangles in T whose names are lexicographically greater than R. The traversal
+* order and output message is also similar. Note that if there are multiple rectangles
+* with the same minimum distance to R, you should choose the one that was visited first
+* during the traversal of the quadtree.
+*/
+Message* QuadTreeApp::lexically_greater_nearest_neighbor(string r) {
 
-void QuadTreeApp::lexically_greater_nearest_neighbor(string name)
-{
+    /* find rect in collection */
+    if (m_rect_list.find(r) == m_rect_list.end())
+        return new Message(true, "", "rectangle " + r + " not found in collection");
+
+    Rect target  = m_rect_list.find(r)->second;
+    Rect* result = nullptr;
+
+    result = m_quadtree.lexically_greater_nearest_neighbor(target);
+
+    /* output result */
+    if (result != nullptr)
+    {
+        return new Message (
+                true,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                "found rectangle " + result->m_name
+        );
+    }
+    else
+    {
+        return new Message(
+                false,
+                (should_trace()) ? to_string(m_quadtree.get_trace()) : "",
+                "no rectangle found"
+        );
+    }
 }
 
 /******************************************************************************
@@ -965,7 +999,7 @@ Message* QuadTreeApp::label() {
         }
     }
 
-    /* add new touch pairs to components in reverse in form of (first, smallest_connected_component[second])*/
+    /* add new touch pairs to components in reverse in form of: (first, smallest_connected_component[first])*/
     for (m = touch_pairs.rbegin(); m != touch_pairs.rend(); m++) {
 
         if (smallest_connected_component.find(m->second) != end

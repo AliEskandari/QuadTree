@@ -39,15 +39,15 @@ public:
     inline bool touches(const Rect& r) { return ((!(r.m_x1 > m_x2 || r.m_x2 < m_x1) && (r.m_y1 == m_y2 || r.m_y2 == m_y1)) /* touches top or bottom */
                 || (!(r.m_y1 > m_y2 || r.m_y2 < m_y1) && (r.m_x1 == m_x2 || r.m_x2 == m_x1)));} /* touches left or right */
 
-    /* will return 0 if rectangles intersect or touch horizontally/vertically, positive otherwise */
+    /* will return 0 if rectangles intersect, 0 if touch and positive otherwise */
     inline int horiz_distance(Rect& r) { return max(0, max(r.m_x1 - m_x2, m_x1 - r.m_x2)); }
     inline int vert_distance(Rect& r) { return max(0, max(r.m_y1 - m_y2, m_y1 - r.m_y2)); }
-    /* distance from rect to rect, 0 if rect intersects */ /* TODO: clean function up */
-    inline int distance(Rect& r) { Point a = m_p1 - r.m_p2,b = r.m_p1 - m_p2,c = Point(0,0); Point d = (a<b?b:a); return (d<c?c:d).magnitude(); }
-    /* distance from rect to point, 0 if rect contains point */ /* TODO: clean function up */
-    inline int distance(Point& p) { Point a = m_p1 - p, b = p - m_p2, c =Point(0,0);Point d = (a<b?b:a);return (d<c?c:d).magnitude(); }
+    /* distance from rect to rect, 0 if rect intersects */
+    inline int distance(Rect& r) { return max(m_p1 - r.m_p2, r.m_p1 - m_p2, Point(0,0)).magnitude(); }
+    /* distance from rect to point, 0 if rect contains point */
+    inline int distance(Point& p) { return max(m_p1 - p, p - m_p2, Point(0,0)).magnitude(); }
 
-    inline bool operator ==(const Rect& r) { return m_x1 == r.m_x1 && m_y1 == r.m_y1 && m_x2 == r.m_x2 && m_y2 == r.m_y2; }
+    inline bool operator ==(const Rect& r) { return r.m_p1 == m_p1 && r.m_p2 == m_p2; }
     inline bool operator !=(const Rect& r) { return !(*this == r); }
 };
 

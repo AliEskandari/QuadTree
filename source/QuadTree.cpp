@@ -514,6 +514,7 @@ void QuadTree::nearest_rectangle_helper(QuadNodeToPointPQ *pq, Point &target, Re
     }
 }
 
+/**/
 set<Rect>* QuadTree::window(Rect &target) {
 
     start_trace();
@@ -563,6 +564,7 @@ void QuadTree::window_helper(QuadNode *n, Rect &target, set<Rect> *results) {
 
 }
 
+/**/
 Rect* QuadTree::nearest_neighbor(Rect &target) {
 
     start_trace();
@@ -597,7 +599,7 @@ void QuadTree::nearest_neighbor_helper(QuadNodeToRectPQ* pq, Rect& target, Rect 
     *  don't consider node if:
     *  - it is farther from target rect than nearest rect found so far
     *  - target rect contains node because any rect in node will be invalid (intersects target) */
-    if (target.contains(n->m_rect) || node_to_target >= result_to_target) return;
+    if (target.contains(n->m_bounds) || node_to_target >= result_to_target) return;
 
     visit(n);
 
@@ -628,6 +630,78 @@ void QuadTree::nearest_neighbor_helper(QuadNodeToRectPQ* pq, Rect& target, Rect 
         nearest_neighbor_helper(pq, target, result);
         nearest_neighbor_helper(pq, target, result);
         nearest_neighbor_helper(pq, target, result);
+
+        return;
+    }
+}
+
+/**/
+Rect* QuadTree::lexically_greater_nearest_neighbor(Rect &target) {
+
+    start_trace();
+
+    /* create priority queue keyed on min horizontal distance to target */
+    QuadNodeToRectPQ * pq = new QuadNodeToRectPQ(CompareDistanceToRect(target, DIAGONAL));
+    pq->push(m_root);
+
+    /* find min vertical neighbor */
+    Rect* result    = nullptr;
+    lexically_greater_nearest_neighbor_helper(pq, target, &result);
+
+    /* cleanup */
+    delete pq;
+
+    return result;
+}
+
+void QuadTree::lexically_greater_nearest_neighbor_helper(QuadNodeToRectPQ* pq, Rect& target, Rect **result) {
+
+    /* stop when queue is empty */
+    if(pq->empty()) return;
+
+    /* grab next node with smallest vertical distance to target rect */
+    QuadNode* n = pq->top();
+    pq->pop();
+
+    int node_to_target = n->m_bounds.distance(target);
+    int result_to_target = (*result == nullptr) ? m_width : target.distance(**result);
+
+    /**
+    *  don't consider node if:
+    *  - it is farther from target rect than nearest rect found so far
+    *  - target rect contains node because any rect in node will be invalid (intersects target) */
+    if (target.contains(n->m_bounds) || node_to_target >= result_to_target) return;
+
+    visit(n);
+
+    if (n->m_type == WHITE) /* if node is empty */
+        /* → return */
+    {
+        return;
+    }
+    else if (n->m_type == BLACK) /* else if node has rect data */
+        /* → check if data is has smaller vertical distance, return */
+    {
+        int rect_to_target  = n->m_rect.distance(target);
+
+        /* if distance is valid & less than previous min, and name is lexically greater → set as result */
+        if (!n->m_rect.intersects(target) && (n->m_rect > target) && rect_to_target < result_to_target)
+            *result = &(n->m_rect);
+
+        return;
+    }
+    else /* (m_type == GRAY) */ /* else node is parent */
+        /* → push 4 quadrants */
+    {
+        pq->push(n->m_nw);
+        pq->push(n->m_ne);
+        pq->push(n->m_sw);
+        pq->push(n->m_se);
+
+        lexically_greater_nearest_neighbor_helper(pq, target, result);
+        lexically_greater_nearest_neighbor_helper(pq, target, result);
+        lexically_greater_nearest_neighbor_helper(pq, target, result);
+        lexically_greater_nearest_neighbor_helper(pq, target, result);
 
         return;
     }

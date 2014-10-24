@@ -39,7 +39,7 @@ enum CompareAxis {
 
 class CompareDistanceToRect {
     Rect target;
-    CompareAxis m_compare_axis = DIAGONAL;
+    CompareAxis m_compare_axis;
 
 public:
     CompareDistanceToRect(Rect target, CompareAxis compare_axis) : target(target), m_compare_axis(compare_axis) {}
@@ -56,12 +56,18 @@ public:
         }
         else if (m_compare_axis == VERTICAL)
         {
-            int hd1 = max(0, target.vert_distance(n1->m_bounds));
-            int hd2 = max(0, target.vert_distance(n2->m_bounds));
-            if (hd1 == hd2) return n1->m_label > n2->m_label;
-            else return hd1 > hd2;
+            int vd1 = max(0, target.vert_distance(n1->m_bounds));
+            int vd2 = max(0, target.vert_distance(n2->m_bounds));
+            if (vd1 == vd2) return n1->m_label > n2->m_label;
+            else return vd1 > vd2;
         }
-        else return true;
+        else
+        {
+            int d1 = max(0, target.distance(n1->m_bounds));
+            int d2 = max(0, target.distance(n2->m_bounds));
+            if (d1 == d2) return n1->m_label > n2->m_label;
+            else return d1 > d2;
+        }
     }
 };
 
@@ -75,8 +81,8 @@ public:
 
         int d1 = n1->m_bounds.distance(target);
         int d2 = n2->m_bounds.distance(target);
-        if (d1 == d2) return n1->m_label < n2->m_label;
-        else return d1 < d2;
+        if (d1 == d2) return n1->m_label > n2->m_label;
+        else return d1 > d2;
     }
 };
 

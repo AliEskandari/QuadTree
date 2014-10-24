@@ -30,29 +30,6 @@ int main()
 
 
     if (debug) {
-//        q.set_trace(ON);
-//        produce_output(q.init_quadtree(8), cmd);
-//        produce_output(q.list_rectangles(), cmd);
-//        produce_output(q.create_rectangle("R1", 5, 5, 25, 25), cmd);
-//        produce_output(q.create_rectangle("R4", 200, 200, 210, 210), cmd);
-//        produce_output(q.create_rectangle("R2", 20, 20, 31, 31), cmd);
-//        produce_output(q.create_rectangle("R3", 30, 30, 40, 40), cmd);
-//        produce_output(q.insert("R4"), cmd);
-//        produce_output(q.search_point(1, 1), cmd);
-//        produce_output(q.insert("R1"), cmd);
-//        produce_output(q.insert("R4"), cmd);
-//        produce_output(q.insert("R2"), cmd);
-//        produce_output(q.search_point(1, 1), cmd);
-//        produce_output(q.insert("R3"), cmd);
-//        produce_output(q.search_point(5, 5), cmd);
-//        produce_output(q.list_rectangles(), cmd);
-//        produce_output(q.search_rectangle("R2"), cmd);
-//        produce_output(q.search_point(1, 1), cmd);
-//        produce_output(q.insert("R2"), cmd);
-//        produce_output(q.search_point(7, 7), cmd);
-//        produce_output(q.insert("R2"), cmd);
-//        produce_output(q.delete_point(10, 10), cmd);
-
         produce_output(q.init_quadtree(8), cmd);
         produce_output(q.create_rectangle("R1",5,5,25,25), cmd);
         produce_output(q.create_rectangle("R2",20,20,31,31), cmd);
@@ -148,7 +125,7 @@ int main()
                 message = q.nearest_neighbor(cmd[1]);
         } else if (op == "LEXICALLY_GREATER_NEAREST_NEIGHBOR") {
             if (is_valid_op(16, cmd, 1))
-                q.lexically_greater_nearest_neighbor(cmd[1]);
+                message = q.lexically_greater_nearest_neighbor(cmd[1]);
         } else if (op == "LABEL") {
             if (is_valid_op(17, cmd, 0))
                 message = q.label();
